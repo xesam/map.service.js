@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>公交线路查询</title>
+    <script src="https://webapi.amap.com/maps?v=1.4.6&key=xxxx&plugin=AMap.LineSearch"></script>
+</head>
+<body>
+<script src="line.search.js"></script>
+<script>
+
+    var line_searcher_1 = Object.create(LineSearcher).init('武汉');
+    line_searcher_1.search_by_id('420100024405').then(lines => {
+        console.log(lines);
+    }).catch(err => {
+        console.log(err);
+    });
+    line_searcher_1.search_by_name('地铁2号线').then(lines => {
+        console.log(lines);
+    }).catch(err => {
+        console.log(err);
+    });
+</script>
+</body>
+</html>
