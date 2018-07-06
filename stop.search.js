@@ -1,5 +1,4 @@
-var LineSearcher = (function () {
-
+var StopSearcher = (function () {
     function check_response(...items) {
         return items.length >= 2 && items[0] === 'complete' && items[1].info === 'OK';
     }
@@ -15,28 +14,21 @@ var LineSearcher = (function () {
         }, {});
     }
 
-    function to_line(line_infos) {
-        return line_infos.map((line) => {
+    function to_station(station_infos) {
+        return station_infos.map((station_info) => {
             return {
-                ...get_attrs(line,
+                ...get_attrs(station_info,
                     'id',
                     'name',
                     'type',
-                    'start_stop',
-                    'end_stop',
-                    'stime',
-                    'etime',
-                    'basic_price',
-                    'total_price',
-                    'distance',
                     'citycode',
-                    'company'
+                    'adcode'
                 ),
-                path: line.path.map(to_location),
-                stops: line.via_stops.map(stop => {
+                default_location: to_location(station_info.location),
+                lines: station_info.buslines.map(line => {
                     return {
-                        ...get_attrs(stop, 'id', 'name'),
-                        location: to_location(stop.location)
+                        ...get_attrs(line, 'id', 'name', 'start_stop', 'end_stop'),
+                        location: to_location(line.location)
                     }
                 }),
             };
@@ -50,8 +42,8 @@ var LineSearcher = (function () {
         searcher.setPageSize(page_size);
         searcher.search(name, function (status, result) {
             if (check_response(status, result)) {
-                let infos = result.lineInfo;
-                let search_lines = to_line(infos);
+                let infos = result.stationInfo;
+                let search_lines = to_station(infos);
                 if (search_lines.length < page_size) {
                     total_items = total_items.concat(search_lines);
                     resolve(total_items);
@@ -70,11 +62,11 @@ var LineSearcher = (function () {
         });
     }
 
+
     return {
         init(city_name) {
-            this.searcher = new AMap.LineSearch({
-                city: city_name,
-                extensions: 'all'
+            this.searcher = new AMap.StationSearch({
+                city: city_name
             });
             return this;
         },
@@ -82,9 +74,10 @@ var LineSearcher = (function () {
             return new Promise((resolve, reject) => {
                 this.searcher.searchById(id, function (status, result) {
                     if (check_response(status, result)) {
-                        let line_infos = result.lineInfo;
-                        let lines = to_line(line_infos);
-                        resolve(lines);
+                        console.log(result);
+                        let infos = result.stationInfo;
+                        let items = to_station(infos);
+                        resolve(items);
                     } else {
                         console.error(status);
                         reject(status);
