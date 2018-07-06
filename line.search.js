@@ -35,7 +35,7 @@ var LineSearcher = (function () {
                 path: line.path.map(to_location),
                 stops: line.via_stops.map(stop => {
                     return {
-                        ...get_attrs(stop, 'id', 'name', 'citycode'),
+                        ...get_attrs(stop, 'id', 'name'),
                         location: to_location(stop.location)
                     }
                 }),

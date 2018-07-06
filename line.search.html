@@ -5,19 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <title>公交线路查询</title>
-    <script src="https://webapi.amap.com/maps?v=1.4.6&key=xxxx&plugin=AMap.LineSearch"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.6&key=9ab008b291ee69781485ab1adce836d8&plugin=AMap.LineSearch"></script>
 </head>
 <body>
 <script src="line.search.js"></script>
 <script>
 
-    var line_searcher_1 = Object.create(LineSearcher).init('武汉');
-    line_searcher_1.search_by_id('420100024405').then(lines => {
+    var line_searcher_1 = Object.create(LineSearcher).init('北京');
+    line_searcher_1.search_by_id('420100024405').then(lines => {//武汉
         console.log(lines);
     }).catch(err => {
         console.log(err);
     });
-    line_searcher_1.search_by_name('地铁2号线').then(lines => {
+    line_searcher_1.search_by_name('快速公交3').then(lines => {
         console.log(lines);
     }).catch(err => {
         console.log(err);
